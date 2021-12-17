@@ -1,18 +1,16 @@
 const chalk     = require('chalk');
 
+let _headless = true;
+
 function logRobo(msg){
   console.log(chalk.bgHex("#24ade3").bold("Robô"), msg);
 }
 
-function trataPrecos(preco) {
-  return preco
-    .replace(/(<([^>]+)>)/gi, "")
-    .replace("R$", "")
-    .replace(" ", "")
-    .replace("&nbsp", "")
-    .replace(".", "")
-    .replace(",", ".")
-    .trim();
+function setHeadless(headless){
+  _headless = headless
 }
 
-module.exports = { logRobo, trataPrecos };
+function getHeadless(){
+  return _headless;
+}
+module.exports = { logRobo, setHeadless, getHeadless };

@@ -1,17 +1,27 @@
-
 require("dotenv").config();
-const { roboWebscraper }     = require("./sites/webscraper-io");
+const { roboWebscraper }      = require("./sites/webscraper-io");
+const { roboWebCrawlerCheck } = require("./sites/webcrawler-check");
 
-async function bootstrap(marketplace){
+async function bootstrap(site){
 
     try {        
-        let endpoints = {
-            "more": 'https://webscraper.io/test-sites/e-commerce/more',
-        };
+        let endpoints = [
+            {
+                "title": "more",
+                "link": 'https://webscraper.io/test-sites/e-commerce/more',
+            },
+            {
+                "title": "webcrawler-check",
+                "link": 'https://gs.statcounter.com/detect',
+            },
+        ];
 
-        switch (marketplace) {            
-            case "webscraper":                
-                await roboWebscraper(endpoints[Math.floor(Math.random() * endpoints.length)]);
+        switch (site) {            
+            case "webscraper":
+                await roboWebscraper(endpoints[0]);
+            break;
+            case "webcrawler-check":
+                await roboWebCrawlerCheck(endpoints[1]);
             break;
         }
 

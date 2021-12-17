@@ -1,27 +1,23 @@
 require("dotenv").config();
 const log           = console.log;
-const cron          = require("node-cron");
 const { bootstrap } = require("./src/boostrap");
-        
+const { setHeadless } = require("./src/utils/helpers");
+
 (async () => {
 
-    const args        = process.argv.slice(2);
-    const marketplace = args[1];
+    const args = require('yargs/yargs')(process.argv.slice(2)).argv;
+    const site = args.site;
 
-    log("🤖 Aguardando para iniciar o robô! " + marketplace );
+    log("🤖 Aguardando para iniciar o robô! " + site );
 
-    if( args && args[2] == '-c' ){
-
-        let tempoCron = process.env[`TIME_${marketplace.toUpperCase()}`];
-        
-        cron.schedule(tempoCron, async () => {
-            log("🤖 Iniciando robô! " + marketplace + " no tempo " + tempoCron);
-            await bootstrap(marketplace);
-        });
+    if( args._ && args._[0] == 'noheadless' ){
+        setHeadless(false)
+        log("🤖 Iniciando webscraping no site: " + site + ", porém iniciando o navegador visivelmente (no headless) ");
+        await bootstrap(site);        
 
     }else{
-        log("🤖 Iniciando robô! " + marketplace);
-        await bootstrap(marketplace);
+        log("🤖 Iniciando webscraping no site: " + site);
+        await bootstrap(site);
     }
     
 })();
